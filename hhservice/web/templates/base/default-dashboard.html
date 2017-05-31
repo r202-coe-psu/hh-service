@@ -1,0 +1,30 @@
+{% extends "/base/base-layout.jinja2" %}
+
+{% block jsmodule %}
+System.import('css-framework').then(() => {
+                System.import('dashboard'); 
+            });
+{% endblock %}
+{% block additional_head %}
+		<style>
+				header, main, footer {
+      				padding-left: 300px;
+    			}
+
+    			@media only screen and (max-width : 992px) {
+      				header, main, footer {
+        			padding-left: 0;
+      			}
+    		}
+        </style>
+{% endblock additional_head %}
+
+{% block header %}
+  {% include "/base/toolbar-dashboard.jinja2" %}
+{% endblock %}
+
+{% block main %}
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+{% endblock %}
