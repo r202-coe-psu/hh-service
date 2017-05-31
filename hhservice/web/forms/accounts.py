@@ -14,9 +14,11 @@ from wtforms import fields
 from wtforms import validators
 from wtforms.fields import html5
 
-def validate_email(form, field):
-    user = models.User.objects(email=field.data).first()
+from flask_wtf import FlaskForm
 
+def validate_email(form, field):
+#    user = models.User.objects(email=field.data).first()
+    user = None
     if user is not None:
         raise validators.ValidationError(
             'This email: %s is available on system'% field.data)
@@ -30,12 +32,13 @@ def validate_username(form, field):
         raise validators.ValidationError(
             'This username: %s is not allowed'% field.data)
 
-    user = models.User.objects(username=field.data).first()
+    user = None
+    # user = models.User.objects(username=field.data).first()
 
-    request = get_current_request()
-    request_user = request.user
-    if request_user == user:
-        return
+    # request = get_current_request()
+    # request_user = request.user
+    # if request_user == user:
+    #     return
     
     if user is not None:
         raise validators.ValidationError(
@@ -75,8 +78,9 @@ class LoginForm(Form):
     password = fields.PasswordField('Password', validators=[validators.InputRequired()])
     came_from = fields.HiddenField('Came form')
     
-class RegisterForm(Form):
-    username = fields.TextField('Username', validators=[validators.InputRequired(), validators.Length(min=2), validate_username])
+class RegisterForm(FlaskForm):
+    username = fields.TextField('Username',
+            validators=[validators.InputRequired(), validators.Length(min=3), validate_username])
     email = html5.EmailField('Email', validators=[validators.InputRequired(), validators.Email(), validate_email])
     password = fields.PasswordField('Password', validators=[validators.InputRequired(), validators.Length(min=6), validators.EqualTo('password_conf', message="password mismatch")])
     password_conf = fields.PasswordField('Password Confirm', validators=[validators.InputRequired()])

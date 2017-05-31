@@ -9,8 +9,11 @@ def login():
     return render_template('accounts/login.html')
 
 
-@module.route('/register')
+@module.route('/register',  methods=('GET', 'POST'))
 def register():
-    form = forms.accounts.RegisterForm(request.args)
-    return render_template('accounts/register.html',
-            form=form)
+    form = forms.accounts.RegisterForm()
+    if form.validate_on_submit():
+        return 'ok'
+    else:
+        return render_template('accounts/register.html',
+                form=form)

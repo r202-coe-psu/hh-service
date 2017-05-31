@@ -30,7 +30,8 @@ setup(
         'flask',
         'jinja2',
         'flask-login',
-        'flask-principal'
+        'flask-principal',
+        'flask-wtf'
     ],
      dependency_links =[
          'https://github.com/sdayu/rethinkengine.git'

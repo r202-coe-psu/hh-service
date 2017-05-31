@@ -6,4 +6,5 @@ hhservice/static/build.js.map
 hhservice/static/config.js
 *.egg*
 *.ini
+*.cfg
 
