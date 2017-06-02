@@ -31,7 +31,8 @@ setup(
         'jinja2',
         'flask-login',
         'flask-principal',
-        'flask-wtf'
+        'flask-wtf',
+        'flask-restful'
     ],
      dependency_links =[
          'https://github.com/sdayu/rethinkengine.git'
@@ -39,6 +40,9 @@ setup(
     classifiers=[
     ],
     entry_points='''
+        [console_scripts]
+        hhservice-web=hhservice.cmd.web:main
+        hhservice-api=hhservice.cmd.api:main
     '''
 )
 
