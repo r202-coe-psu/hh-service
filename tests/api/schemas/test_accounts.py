@@ -1,13 +1,15 @@
 import unittest
 
 from hhservice.api.schemas import accounts
-import jsonschema
+import marshmallow as ma
 
-class RegisterSchemaTest(unittest.TestCase):
+
+class UserSchemaTest(unittest.TestCase):
     def setUp(self):
         self.register_request_dict = dict(
-                register=dict(
-                    user=dict(
+                data=dict(
+                    type='user',
+                    attributes=dict(
                         username='testuser',
                         password='testpassword',
                         email='test@test.local',
@@ -15,67 +17,78 @@ class RegisterSchemaTest(unittest.TestCase):
                         last_name='last_name'
                         )
                     )
-                )
-
-        self.validator = jsonschema.Draft4Validator(accounts.register,
-                format_checker=jsonschema.FormatChecker())
-
-
-    def test_validate_register_schema(self):
-        try:
-            jsonschema.Draft4Validator.check_schema(accounts.register)
-        except Exception as e:
-            self.fail(e)
-        self.assertTrue(True)
-         
+                )     
+        self.schema = accounts.UserSchema()
 
     def test_give_valid_case_should_pass(self):
-        result = self.validator.is_valid(
-                self.register_request_dict['register'])
+        result = self.schema.validate(self.register_request_dict)
         
-        self.assertTrue(result)
+        self.assertTrue(not result)
 
 
     def test_wrong_email_format_should_not_valid(self):
-        self.register_request_dict['register']['user']['email'] = 'test'
-        result = self.validator.is_valid(
-                self.register_request_dict['register'])
+        self.register_request_dict['data']['attributes']['email'] = 'test'
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
 
-        self.assertFalse(result)
+        self.assertIsNone(result)
 
 
     def test_missing_username_attributes_should_not_valid(self):
         request_dict = self.register_request_dict.copy()
-        request_dict['register']['user'].pop('username')
-        result = self.validator.is_valid(request_dict)
-        self.assertFalse(result)
+        request_dict['data']['attributes'].pop('username')
+        
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
+
+        self.assertIsNone(result)
+
 
     def test_missing_password_attributes_should_not_valid(self):
         request_dict = self.register_request_dict.copy()
-        request_dict['register']['user'].pop('password')
-        result = self.validator.is_valid(request_dict)
-        self.assertFalse(result)
+        request_dict['data']['attributes'].pop('password')
+
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
+
+        self.assertIsNone(result)
 
 
     def test_missing_email_attributes_should_not_valid(self):
         request_dict = self.register_request_dict.copy()
-        request_dict['register']['user'].pop('email')
-        result = self.validator.is_valid(request_dict)
-        self.assertFalse(result)
+        request_dict['data']['attributes'].pop('email')
+
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
+
+        self.assertIsNone(result)
 
 
     def test_missing_firstname_attributes_should_not_valid(self):
         request_dict = self.register_request_dict.copy()
-        request_dict['register']['user'].pop('first_name')
-        result = self.validator.is_valid(request_dict)
-        self.assertFalse(result)
+        request_dict['data']['attributes'].pop('first_name')
+
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
+
+        self.assertIsNone(result)
+
 
 
     def test_missing_lastname_attributes_should_not_valid(self):
         request_dict = self.register_request_dict.copy()
-        request_dict['register']['user'].pop('last_name')
-        result = self.validator.is_valid(request_dict)
-        self.assertFalse(result)
+        request_dict['data']['attributes'].pop('last_name')
+
+        result = None
+        with self.assertRaises(ma.exceptions.ValidationError):
+            result = self.schema.validate(self.register_request_dict)
+
+        self.assertIsNone(result)
 
 
 

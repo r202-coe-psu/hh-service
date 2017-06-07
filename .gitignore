@@ -7,4 +7,4 @@ hhservice/static/config.js
 *.egg*
 *.ini
 *.cfg
-
+.coverage
