@@ -32,7 +32,8 @@ setup(
         'flask-login',
         'flask-principal',
         'flask-wtf',
-        'flask-restful'
+        'flask-restful',
+        'marshmallow-jsonapi'
     ],
      dependency_links =[
          'https://github.com/sdayu/rethinkengine.git'
