@@ -32,11 +32,11 @@ setup(
         'flask-login',
         'flask-principal',
         'flask-wtf',
-        'flask-restful',
-        'marshmallow-jsonapi'
+        'marshmallow-jsonapi',
+        'rethinkengine'
     ],
-     dependency_links =[
-         'https://github.com/sdayu/rethinkengine.git'
+    dependency_links=[
+        'https://github.com/sdayu/rethinkengine.git#master'
     ],
     classifiers=[
     ],
@@ -46,4 +46,3 @@ setup(
         hhservice-api=hhservice.cmd.api:main
     '''
 )
-

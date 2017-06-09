@@ -9,8 +9,6 @@ app = Flask(__name__)
 app.config.from_object('hhservice.web.default_settings')
 app.config.from_envvar('HHSERVICE_WEB_SETTINGS', silent=True)
 
-
-
 from .views import *
 
 

@@ -1,4 +1,4 @@
 nose
 nose-cov
 watchdog
-
+flake8

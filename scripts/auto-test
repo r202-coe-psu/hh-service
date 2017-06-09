@@ -35,8 +35,16 @@ def when_file_changed(filename):
     options = "--with-coverage --cover-erase " \
         "--cover-package={package} -v {test_filename}".format(package=package,
                 test_filename=test_filename)
+    pep8 = 'flake8 {}'.format(filename)
 
     cmd = nose + " " + options
+    print(pep8)
+    os.system(pep8)
+    print('-'*70)
+    
+    if not os.path.isfile(test_filename):
+        return
+
     print(cmd)
     os.system(cmd)
 
