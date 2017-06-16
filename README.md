@@ -21,6 +21,33 @@ $ source hh-env
 (hh-env)$ python setup.py develop
 ~~~~
 
+* Install `hhclient` for web module
+ * Clone repository
+~~~~
+git clone git@138.47.200.245:HomeHero-Projects/python-hhclient.git
+~~~~
+ * install `hhclient` in testing environment
+~~~~
+$ source hh-env
+(hh-env)$ cd python-hhclient
+(hh-env)$ python setup.py develop
+~~~~
+
+### API module
+* Run api module
+
+~~~~
+$ source hh-env
+(hh-env)$ cd hh-service
+(hh-env)$ HHSERVICE_API_SETTINGS=$(pwd)/api-development.cfg hhservice-api -d
+~~~~
+
+* Note
+ * `HHSERVICE_API_SETTINGS` = an API setting file environent
+ * `api-development.cfg` = an API setting file contains configurating variables.
+ * `hhservice-api` = an API executable file
+
+
 ### Web module
 
 * Initial JavaScript using jspm
@@ -34,5 +61,11 @@ $ jspm install
 ~~~~
 $ source hh-env
 (hh-env)$ cd hh-service
-(hh-env)$ python run_web.py -d
+(hh-env)$ HHSERVICE_WEB_SETTINGS=$(pwd)/web-development.cfg hhservice-web -d
 ~~~~
+* Note
+ * `HHSERVICE_WEB_SETTINGS` = a web setting file environent
+ * `web-development.cfg` = a web setting file contains configurating variables.
+ * `hhservice-web` = a web server executable file
+
+
