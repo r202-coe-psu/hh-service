@@ -3,7 +3,9 @@ from .users import User
 
 __all__ =[User, ]
 
-import rethinkengine as re
+from flask_mongoengine import MongoEngine
 
-def init_db(**kwargs):
-    re.connect(**kwargs)
+db = MongoEngine()
+
+def init_db(app):
+    db.init_app(app)

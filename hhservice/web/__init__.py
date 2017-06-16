@@ -1,11 +1,11 @@
 
 import optparse
-import os
 
-
-from flask import Flask
+from flask import Flask, g
 from flask_login import LoginManager
 from flask_principal import Principal, Permission, RoleNeed
+
+from hhclient.client import Client
 
 app = Flask(__name__)
 app.config.from_object('hhservice.web.default_settings')
@@ -20,13 +20,18 @@ principals = Principal(app)
 admin_permission = Permission(RoleNeed('admin'))
 user_permission = Permission(RoleNeed('user'))
 
+# if not hasattr(g, 'hhclient'):
+#     g.hhclient = Client(
+#         host=app.config.get('HHSERVICE_APT_HOST'),
+#         port=app.config.get('HHSERVICE_APT_PORT')
+#     )
+
 
 from .views import *
 
 
 def get_program_options(default_host='127.0.0.1',
-        default_port='5000'):
-
+                        default_port='5000'):
     """
     Takes a flask.Flask instance and runs it. Parses 
     command-line flags to configure the app.
@@ -36,7 +41,7 @@ def get_program_options(default_host='127.0.0.1',
     parser = optparse.OptionParser()
     parser.add_option("-H", "--host",
                       help="Hostname of the Flask app " + \
-                           "[default %s]" % default_host,
+                            "[default %s]" % default_host,
                       default=default_host)
     parser.add_option("-P", "--port",
                       help="Port for the Flask app " + \
@@ -61,8 +66,7 @@ def get_program_options(default_host='127.0.0.1',
 
         app.config['PROFILE'] = True
         app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
-                       restrictions=[30])
+                                          restrictions=[30])
         options.debug = True
 
     return options
-

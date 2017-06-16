@@ -1,18 +1,20 @@
-import rethinkengine as re
+import mongoengine as me
 import datetime
 
 
-class User(re.Document):
-    __table_name__ = 'users'
+class User(me.Document):
 
-    username = re.StringField(required=True, unique=True)
-    password = re.StringField(required=True)
-    email = re.StringField(required=True, unique=True)
-    first_name = re.StringField(required=True)
-    last_name = re.StringField(required=True)
-    status = re.StringField(required=True)
+    username = me.StringField(required=True, unique=True)
+    password = me.StringField(required=True)
+    email = me.StringField(required=True, unique=True)
+    first_name = me.StringField(required=True)
+    last_name = me.StringField(required=True)
+    status = me.StringField(required=True)
 
-    created_date = re.DateTimeField(required=True,
-                                    default=datetime.datetime.now())
-    updated_date = re.DateTimeField(required=True,
-                                    default=datetime.datetime.now())
+    created_date = me.DateTimeField(required=True,
+                                    default=datetime.datetime.now)
+    updated_date = me.DateTimeField(required=True,
+                                    default=datetime.datetime.now,
+                                    auto_now=True)
+
+    meta = {'collection': 'users'}

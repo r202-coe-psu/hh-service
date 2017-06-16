@@ -5,9 +5,14 @@ import os
 
 from flask import Flask
 
+from . import models
+
 app = Flask(__name__)
-app.config.from_object('hhservice.web.default_settings')
-app.config.from_envvar('HHSERVICE_WEB_SETTINGS', silent=True)
+app.config.from_object('hhservice.api.default_settings')
+app.config.from_envvar('HHSERVICE_API_SETTINGS', silent=True)
+
+models.init_db(app)
+
 
 from .views import *
 

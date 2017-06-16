@@ -33,10 +33,11 @@ setup(
         'flask-principal',
         'flask-wtf',
         'marshmallow-jsonapi',
-        'rethinkengine'
+        'marshmallow-jsonschema',
+        'mongoengine',
+        'flask-mongoengine'
     ],
     dependency_links=[
-        'https://github.com/sdayu/rethinkengine.git#master'
     ],
     classifiers=[
     ],

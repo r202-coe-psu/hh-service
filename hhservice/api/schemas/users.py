@@ -16,5 +16,5 @@ class UserSchema(Schema):
     status = fields.String(requred=True, default='unregister')
 
     class Meta:
-        type_ = 'user'
+        type_ = 'users'
         strict = True
