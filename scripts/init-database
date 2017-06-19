@@ -5,7 +5,7 @@ import optparse
 from hhservice.api import models
 
 def get_program_options(default_host='127.0.0.1',
-            default_port=28015, default_dbname='test'):
+            default_port=27017, default_dbname='testx'):
 
     """
     Takes a flask.Flask instance and runs it. Parses 
@@ -24,9 +24,16 @@ def get_program_options(default_host='127.0.0.1',
                       default=default_port)
 
     parser.add_option("-d", "--db",
-            help="Port for the database " + \
+            help="Database name " + \
             "[default %s]" % default_dbname,
             default=default_dbname)
+
+    parser.add_option("-s", "--secret",
+            help="Secret key " + \
+            "[default %s]" % '',
+            default='')
+
+
 
     # parser.add_option("-D", "--debug",
     #                   action="store_true", dest="debug",
@@ -38,10 +45,32 @@ def get_program_options(default_host='127.0.0.1',
 
 def main():
     options = get_program_options()
-    models.init_db(**options.__dict__)
 
-    for d in models.__all__:
-        d.table_create()
+    import mongoengine as me
+
+   
+    me.connection._connection_settings = {}
+    me.connection._connections = {}
+    me.connection._dbs = {}
+    
+    conn = me.connect(db=options.db,
+                      host=options.host,
+                      port=options.port,
+                      alias='default')
+    
+    from hhservice.api.models.users import User
+    user = User(
+            username='admin',
+            email='admin@hh.local',
+            first_name='admin',
+            last_name='admin',
+            status='active')
+
+    user.set_password('password',salt=options.secret)
+
+    user.save()
+
+    
 
 if __name__ == '__main__':
     main()

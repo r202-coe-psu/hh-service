@@ -31,9 +31,9 @@ def when_file_changed(filename):
                 basename.replace('test_','').replace('.py', ''))
         test_filename=filename
 
-    nose = "nosetests"
-    options = "--with-coverage --cover-erase " \
-        "--cover-package={package} -v {test_filename}".format(package=package,
+    nose = 'nosetests'
+    options = '--with-coverage --cover-erase --cover-package={package} ' \
+        '-v {test_filename}'.format(package=package,
                 test_filename=test_filename)
     pep8 = 'flake8 {}'.format(filename)
 
@@ -67,6 +67,7 @@ class ModifiedHandler(PatternMatchingEventHandler):
 
 if __name__ == '__main__':
     args = sys.argv[1:]
+
     event_handler = ModifiedHandler()
     observer = Observer()
     observer.schedule(event_handler,

@@ -11,10 +11,12 @@ app = Flask(__name__)
 app.config.from_object('hhservice.api.default_settings')
 app.config.from_envvar('HHSERVICE_API_SETTINGS', silent=True)
 
-models.init_db(app)
+def initial(app):
+    from . import views
+
+    models.init_db(app)
 
 
-from .views import *
 
 
 def get_program_options(default_host='127.0.0.1',

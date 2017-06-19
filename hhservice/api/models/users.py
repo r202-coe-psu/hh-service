@@ -1,6 +1,8 @@
 import mongoengine as me
 import datetime
 
+from passlib.hash import bcrypt
+
 
 class User(me.Document):
 
@@ -18,3 +20,15 @@ class User(me.Document):
                                     auto_now=True)
 
     meta = {'collection': 'users'}
+
+    def __get_salt(self, salt):
+        token = salt.replace(' ', '.')
+        return '{:.<22}'.format(token)
+
+    def set_password(self, password, salt=''):
+        self.password = bcrypt.using(rounds=16).hash(password,
+                                    salt=self.__get_salt(salt))
+
+    def verify_password(self, password, salt=''):
+        return bcrypt.verify(password,
+                             self.password)

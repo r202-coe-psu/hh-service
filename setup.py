@@ -35,7 +35,9 @@ setup(
         'marshmallow-jsonapi',
         'marshmallow-jsonschema',
         'mongoengine',
-        'flask-mongoengine'
+        'flask-mongoengine',
+        'passlib',
+        'bcrypt'
     ],
     dependency_links=[
     ],
