@@ -1,4 +1,22 @@
 from flask import jsonify
+from flask.json import JSONEncoder
+
+import bson
+
+
+def init_json(app):
+    app.json_encoder = HHJSONEncoder
+
+
+class HHJSONEncoder(JSONEncoder):
+    def default(self, obj):
+        print('json', obj)
+        try:
+            if isinstance(obj, bson.ObjectId):
+                return str(obj)
+        except TypeError:
+            pass
+        return JSONEncoder.default(self, obj)
 
 
 def render_json(*args, **kwargs):

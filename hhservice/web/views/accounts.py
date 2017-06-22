@@ -1,23 +1,65 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, g, url_for, redirect, session
+from flask_login import login_user, logout_user, login_required, current_user
 
 from hhservice.web import forms
+from hhservice.web.acl import User
 
 module = Blueprint('accounts', __name__)
 
-@module.route('/login')
+
+@module.route('/login', methods=('GET', 'POST'))
 def login():
-    return render_template('accounts/login.html')
+   
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard.index'))
+
+    form = forms.accounts.LoginForm()
+
+    if not form.validate_on_submit():
+        return render_template('accounts/login.html',
+                               form=form)
+
+    name = form.name.data
+    password = form.password.data
+    c = g.hhclient
+    auth = c.authenticate(name=name, password=password)
+    if auth.is_error:
+        return render_template('accounts/login.html',
+                               form=form,
+                               errors=auth.errors)
+
+    print('ad:',auth.data)
+
+    user = c.users.get(auth.data['user']['id'])
+    print('ud',user.data)
+
+    session['token'] = auth.data
+    session['user'] = user.data
+
+    user = User(**user.data)
+
+    login_user(user)
+
+    return redirect(url_for('dashboard.index'))
+
+@module.route("/logout")
+@login_required
+def logout():
+    session.pop('token')
+    session.pop('user')
+    logout_user()
+    return redirect(url_for('site.index'))
 
 
-@module.route('/register',  methods=('GET', 'POST'))
+@module.route('/register', methods=('GET', 'POST'))
 def register():
     form = forms.accounts.RegisterForm()
     if not form.validate_on_submit():
         return render_template('accounts/register.html',
                                form=form)
 
-    from hhclient import Client
-    c = Client(port=5001)
+    c = g.hhclient
+
     response = c.users.create(**form.data)
     if response.is_error:
         return render_template('accounts/register.html',

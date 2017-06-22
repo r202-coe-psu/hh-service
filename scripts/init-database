@@ -5,7 +5,7 @@ import optparse
 from hhservice.api import models
 
 def get_program_options(default_host='127.0.0.1',
-            default_port=27017, default_dbname='testx'):
+            default_port=27017, default_dbname='test'):
 
     """
     Takes a flask.Flask instance and runs it. Parses 
@@ -64,9 +64,10 @@ def main():
             email='admin@hh.local',
             first_name='admin',
             last_name='admin',
-            status='active')
+            status='active',
+            roles=['admin', 'user'])
 
-    user.set_password('password',salt=options.secret)
+    user.set_password('password', salt=options.secret)
 
     user.save()
 

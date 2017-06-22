@@ -1,10 +1,9 @@
 
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, current_app
 
 from hhservice.api.renderers import render_json
 from hhservice.api import models
 from hhservice.api import schemas
-from hhservice.api import app
 
 import mongoengine as me
 
@@ -12,12 +11,16 @@ module = Blueprint('users', __name__, url_prefix='/users')
 
 
 @module.route('/', methods=['post'])
+@module.route('', methods=['post'])
 def create():
     schema = schemas.UserSchema()
     try:
         user_data = schema.load(request.get_json())
     except Exception as e:
-        response = render_json(schema.dump(request.get_json()).data)
+        print(e)
+        response_dict = request.get_json()
+        response_dict.update(e.messages)
+        response = render_json(response_dict)
         response.status_code = 400
         abort(response)
 
@@ -26,7 +29,7 @@ def create():
     if user is None:
         user = models.User(**user_data.data)
         user.set_password(user_data.data['password'],
-                          salt=app.secret_key)
+                          salt=current_app.secret_key)
         user.status = 'active'
         user.save()
         return render_json(schema.dump(user).data)
@@ -48,8 +51,24 @@ def create():
 
 
 @module.route('/<user_id>', methods=['get'])
+@module.route('/<user_id>/', methods=['get'])
 def get(user_id):
     schema = schemas.UserSchema()
-    user = models.User.objects.get(user_id)
+    try:
+        user = models.User.objects.with_id(user_id)
+    except Exception as e:
+
+        errors = [
+            {
+              'status': '404',
+              'title':  'User not found',
+              'detail': 'User not found'
+            }
+        ]
+
+        response_dict = dict(errors=errors)
+        response = render_json(response_dict)
+        response.status_code = 404
+        abort(response)
 
     return render_json(schema.dump(user).data)

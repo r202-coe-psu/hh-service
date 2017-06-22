@@ -1,7 +1,11 @@
-from .. import app
 
 from . import site
 from . import accounts
+from . import dashboard
 
-app.register_blueprint(site.module)
-app.register_blueprint(accounts.module)
+
+def register_blueprint(app):
+    app.register_blueprint(site.module)
+    app.register_blueprint(accounts.module)
+
+    dashboard.register_blueprint(app)

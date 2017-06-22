@@ -6,17 +6,19 @@ import os
 from flask import Flask
 
 from . import models
+from . import views
+from . import renderers
 
-app = Flask(__name__)
-app.config.from_object('hhservice.api.default_settings')
-app.config.from_envvar('HHSERVICE_API_SETTINGS', silent=True)
-
-def initial(app):
-    from . import views
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('hhservice.api.default_settings')
+    app.config.from_envvar('HHSERVICE_API_SETTINGS', silent=True)
 
     models.init_db(app)
+    views.register_blueprint(app)
+    renderers.init_json(app)
 
-
+    return app
 
 
 def get_program_options(default_host='127.0.0.1',

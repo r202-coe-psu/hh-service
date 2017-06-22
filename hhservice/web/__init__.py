@@ -1,34 +1,22 @@
 
 import optparse
 
-from flask import Flask, g
-from flask_login import LoginManager
-from flask_principal import Principal, Permission, RoleNeed
+from flask import Flask
 
-from hhclient.client import Client
+from . import views
+from . import acl
+from . import request_context
 
-app = Flask(__name__)
-app.config.from_object('hhservice.web.default_settings')
-app.config.from_envvar('HHSERVICE_WEB_SETTINGS', silent=True)
-
-
-# initial login manager
-login_manager = LoginManager(app)
-
-# initial principal
-principals = Principal(app)
-admin_permission = Permission(RoleNeed('admin'))
-user_permission = Permission(RoleNeed('user'))
-
-# if not hasattr(g, 'hhclient'):
-#     g.hhclient = Client(
-#         host=app.config.get('HHSERVICE_APT_HOST'),
-#         port=app.config.get('HHSERVICE_APT_PORT')
-#     )
-
-
-from .views import *
-
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('hhservice.web.default_settings')
+    app.config.from_envvar('HHSERVICE_WEB_SETTINGS', silent=True)
+    
+    views.register_blueprint(app)
+    acl.init_acl(app)
+    request_context.init_request_context(app)
+    
+    return app
 
 def get_program_options(default_host='127.0.0.1',
                         default_port='5000'):

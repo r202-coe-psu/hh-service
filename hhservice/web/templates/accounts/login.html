@@ -1,1 +1,62 @@
-Hello world
+{% extends "/base/default-page.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+{% macro get_validate_class(errors) -%}
+{%- set class_str = 'validate' -%}
+{% if errors | count > 0 -%}
+{% set class_str = class_str + ' ' + 'invalid' %}
+{%- endif %}
+{{- class_str -}}
+{%- endmacro %}
+
+{% macro get_error_messages(errors) -%}
+{{ errors | join(', ') }}
+{%- endmacro %}
+
+
+<div class="row" style="min-height: 40vh;">
+  <div class="col s6">
+    <h3>Login</h3>
+    {% if errors %}
+    <div class="row">
+      <div class="col s12">
+        <div class="card red lighten-5">
+          <div class="card-content red-text text-darken-4">
+            <span class="card-title">Errors</span>
+              {% for error in errors %}
+              <p>{{ error.detail }}</p>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    <form method="POST" action="{{ request.path }}">
+      {{ form.csrf_token }}
+      <div class="row"> 
+        <div class="input-field col s12">
+          {{ form.name(class_=get_validate_class(form.name.errors)) }}
+          {{ form.name.label(data_error=get_error_messages(form.name.errors)) }}
+
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="input-field col s12">
+          {{ form.password(class_=get_validate_class(form.password.errors)) }}
+          {{ form.password.label(data_error=get_error_messages(form.password.errors)) }}
+        </div>
+      </div>
+
+      <div class="row"> 
+        <div class="input-field col s6">
+          <button type="submit" class="btn">Login</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col s6"></div>
+</div>
+
+{% endblock %}

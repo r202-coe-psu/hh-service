@@ -12,6 +12,7 @@ class User(me.Document):
     first_name = me.StringField(required=True)
     last_name = me.StringField(required=True)
     status = me.StringField(required=True)
+    roles = me.ListField(me.StringField(), default=['user'])
 
     created_date = me.DateTimeField(required=True,
                                     default=datetime.datetime.now)
@@ -23,7 +24,7 @@ class User(me.Document):
 
     def __get_salt(self, salt):
         token = salt.replace(' ', '.')
-        return '{:.<22}'.format(token)
+        return '{:.<22.22}'.format(token)
 
     def set_password(self, password, salt=''):
         self.password = bcrypt.using(rounds=16).hash(password,

@@ -73,8 +73,8 @@ def validate_old_password(form, field):
         raise validators.ValidationError(
             'Old password mismatch')
 
-class LoginForm(Form): 
-    username = fields.TextField('Username or Email', validators=[validators.InputRequired()])
+class LoginForm(FlaskForm): 
+    name = fields.TextField('Username or Email', validators=[validators.InputRequired()])
     password = fields.PasswordField('Password', validators=[validators.InputRequired()])
     came_from = fields.HiddenField('Came form')
     
