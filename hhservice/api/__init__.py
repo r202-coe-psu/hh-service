@@ -2,12 +2,14 @@
 import optparse
 import os
 
-
 from flask import Flask
 
 from . import models
 from . import views
 from . import renderers
+
+from flask_jwt_extended import JWTManager
+
 
 def create_app():
     app = Flask(__name__)
@@ -17,6 +19,8 @@ def create_app():
     models.init_db(app)
     views.register_blueprint(app)
     renderers.init_json(app)
+
+    JWTManager(app)
 
     return app
 

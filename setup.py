@@ -37,7 +37,8 @@ setup(
         'mongoengine',
         'flask-mongoengine',
         'passlib',
-        'bcrypt'
+        'bcrypt',
+        'flask-jwt-extended'
     ],
     dependency_links=[
         'https://github.com/fuhrysteve/marshmallow-jsonschema/tarball/master#egg'

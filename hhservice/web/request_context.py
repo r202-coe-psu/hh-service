@@ -13,7 +13,7 @@ def init_request_context(app):
 
         name = None
         password = None
-        token = None
+        access_token = None
 
         user = current_user
         # auth = session.get('auth', None)
@@ -21,7 +21,7 @@ def init_request_context(app):
         if user.is_authenticated:
             # name = user.name
             # password = auth.get('password', None)
-            token = user.token.get('audit-id', None)
+            access_token = user.token.get('access_token', None)
 
         schemas = app.config.get('HHCLIENT_SCHEMAS', None)
         host = app.config.get('HHCLIENT_HOST')
@@ -34,7 +34,7 @@ def init_request_context(app):
                             host=host,
                             port=port,
                             secure_connection=secure,
-                            token=token,
+                            access_token=access_token,
                             schemas=schemas)
         if not schemas:
             app.config['HHCLIENT_SCHEMAS'] = g.hhclient.schemas

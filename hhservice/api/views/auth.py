@@ -8,8 +8,7 @@ from hhservice.api import models
 from hhservice.api import schemas
 
 import mongoengine as me
-import jwt
-
+from flask_jwt_extended import create_access_token, get_jwt_identity
 
 module = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -34,14 +33,12 @@ def auth():
     td = datetime.timedelta(hours=6)
     if user:
         if user.verify_password(password):
-            playload = dict(
+            identity = dict(
                 id=str(user.id),
                 name=user.username,
                 roles=user.roles)
 
-            jwt_encode = jwt.encode(playload,
-                                    current_app.secret_key,
-                                    algorithm='HS256').decode('utf-8')
+            access_token = create_access_token(identity)
 
             token = dict(
                 methods=['password'],
@@ -50,7 +47,7 @@ def auth():
                     id=user.id,
                     name=name
                     ),
-                audit_id=jwt_encode,
+                access_token=access_token,
                 issued_date=datetime.datetime.now()
                 )
             return render_json(token)

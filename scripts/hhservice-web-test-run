@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source $(pwd)/../py3.6-env/bin/activate
+HHSERVICE_WEB_SETTINGS=$(pwd)/web-development.cfg hhservice-web -d

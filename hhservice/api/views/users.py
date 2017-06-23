@@ -1,5 +1,6 @@
 
 from flask import Blueprint, request, abort, current_app
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from hhservice.api.renderers import render_json
 from hhservice.api import models
@@ -52,7 +53,11 @@ def create():
 
 @module.route('/<user_id>', methods=['get'])
 @module.route('/<user_id>/', methods=['get'])
+@jwt_required
 def get(user_id):
+    current_user = get_jwt_identity()
+    print(current_user)
+
     schema = schemas.UserSchema()
     try:
         user = models.User.objects.with_id(user_id)

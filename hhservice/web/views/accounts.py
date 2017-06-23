@@ -28,10 +28,7 @@ def login():
                                form=form,
                                errors=auth.errors)
 
-    print('ad:',auth.data)
-
     user = c.users.get(auth.data['user']['id'])
-    print('ud',user.data)
 
     session['token'] = auth.data
     session['user'] = user.data
