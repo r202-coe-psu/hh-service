@@ -1,7 +1,9 @@
 
 from .users import User
+from .buildings import Building
+from .applications import Application
 
-__all__ =[User, ]
+__all__ =[User, Application]
 
 from flask_mongoengine import MongoEngine
 

@@ -2,7 +2,7 @@ from flask import jsonify
 from flask.json import JSONEncoder
 
 import bson
-
+import datetime
 
 def init_json(app):
     app.json_encoder = HHJSONEncoder
@@ -10,10 +10,12 @@ def init_json(app):
 
 class HHJSONEncoder(JSONEncoder):
     def default(self, obj):
-        print('json', obj)
+        # print('json', obj)
         try:
             if isinstance(obj, bson.ObjectId):
                 return str(obj)
+            if isinstance(obj, datetime.datetime):
+                return obj.isoformat()
         except TypeError:
             pass
         return JSONEncoder.default(self, obj)

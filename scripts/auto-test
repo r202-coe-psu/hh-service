@@ -15,8 +15,8 @@ def when_file_changed(filename):
     
 
     basename = os.path.basename(filename)
-    if basename.startswith('__') and basename.endswith('__.py'):
-        return # package file
+    # if basename.startswith('__') and basename.endswith('__.py'):
+    #     return # package file
 
     if not basename.startswith('test_'):
         test_filename = filename.replace(package, 'tests')\

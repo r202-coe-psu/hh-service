@@ -11,13 +11,14 @@ class User(me.Document):
     email = me.StringField(required=True, unique=True)
     first_name = me.StringField(required=True)
     last_name = me.StringField(required=True)
-    status = me.StringField(required=True)
+
+    status = me.StringField(required=True, default='disactive')
     roles = me.ListField(me.StringField(), default=['user'])
 
     created_date = me.DateTimeField(required=True,
-                                    default=datetime.datetime.now)
+                                    default=datetime.datetime.utcnow)
     updated_date = me.DateTimeField(required=True,
-                                    default=datetime.datetime.now,
+                                    default=datetime.datetime.utcnow,
                                     auto_now=True)
 
     meta = {'collection': 'users'}
@@ -27,8 +28,9 @@ class User(me.Document):
         return '{:.<22.22}'.format(token)
 
     def set_password(self, password, salt=''):
-        self.password = bcrypt.using(rounds=16).hash(password,
-                                    salt=self.__get_salt(salt))
+        self.password = bcrypt.using(rounds=16).hash(
+            password,
+            salt=self.__get_salt(salt))
 
     def verify_password(self, password, salt=''):
         return bcrypt.verify(password,

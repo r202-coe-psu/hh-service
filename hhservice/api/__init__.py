@@ -7,8 +7,7 @@ from flask import Flask
 from . import models
 from . import views
 from . import renderers
-
-from flask_jwt_extended import JWTManager
+from . import acl
 
 
 def create_app():
@@ -19,8 +18,13 @@ def create_app():
     models.init_db(app)
     views.register_blueprint(app)
     renderers.init_json(app)
+    acl.init_jwt(app)
 
-    JWTManager(app)
+    # @app.before_request
+    # def before_request(): 
+    #     from flask import request
+    #     print('rh:', request.headers)
+    #     print('rd:', request.data)
 
     return app
 

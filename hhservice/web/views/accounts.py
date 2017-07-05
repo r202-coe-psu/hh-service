@@ -9,7 +9,6 @@ module = Blueprint('accounts', __name__)
 
 @module.route('/login', methods=('GET', 'POST'))
 def login():
-   
     if current_user.is_authenticated:
         return redirect(url_for('dashboard.index'))
 
@@ -28,10 +27,13 @@ def login():
                                form=form,
                                errors=auth.errors)
 
+    print('--->', auth.data)
     user = c.users.get(auth.data['user']['id'])
+    buildings = c.buildings.list()
 
     session['token'] = auth.data
     session['user'] = user.data
+    session['buildings'] = [building.data for building in buildings]
 
     user = User(**user.data)
 
@@ -39,11 +41,13 @@ def login():
 
     return redirect(url_for('dashboard.index'))
 
+
 @module.route("/logout")
 @login_required
 def logout():
-    session.pop('token')
-    session.pop('user')
+    session.pop('token', None)
+    session.pop('user', None)
+    session.pop('buildings', None)
     logout_user()
     return redirect(url_for('site.index'))
 

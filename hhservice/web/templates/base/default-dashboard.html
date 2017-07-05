@@ -8,17 +8,22 @@ System.import('css-framework').then(() => {
             });
 {% endblock %}
 {% block additional_head %}
-		<style>
-				header, main, footer {
-      				padding-left: 300px;
-    			}
+<style>
+  header, main, footer {
+        padding-left: 300px;
+    }
 
-    			@media only screen and (max-width : 992px) {
-      				header, main, footer {
-        			padding-left: 0;
-      			}
-    		}
-        </style>
+    @media only screen and (max-width : 992px) {
+        header, main, footer {
+        padding-left: 0;
+      }
+  }
+  .collapsible li.active i#more {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+  }
+</style>
 {% endblock additional_head %}
 
 {% block header %}
@@ -27,6 +32,16 @@ System.import('css-framework').then(() => {
 
 {% block main %}
   <div class="container">
+		<!-- <nav>-->
+		<!--   <div class="nav-wrapper">-->
+		<!--     <div class="col s12">-->
+		<!--       <a href="#!" class="breadcrumb">First</a>-->
+		<!--       <a href="#!" class="breadcrumb">Second</a>-->
+		<!--       <a href="#!" class="breadcrumb">Third</a>-->
+		<!--     </div>-->
+		<!--   </div>-->
+		<!-- </nav>-->
+            
     {% block content %}{% endblock %}
   </div>
 {% endblock %}

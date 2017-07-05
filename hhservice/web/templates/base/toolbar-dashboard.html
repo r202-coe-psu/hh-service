@@ -1,19 +1,41 @@
 <ul id="slide-out" class="side-nav fixed">
     <li>
-        <div class="userView">
+        <div class="userView" style="background-color: #fb8c00;">
+            {#
             <div class="background">
                 <img src="images/office.jpg">
             </div>
+            #}
+            {#
             <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-            <a href="#!name"><span class="white-text name">John Doe</span></a>
-            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            #}
+            <a href="#!name"><span class="white-text name">{{ current_user.first_name }} {{ current_user.last_name }}</span></a>
+            <a href="#!email"><span class="white-text email">{{ current_user.email }}</span></a>
         </div>
     </li>
-    <li><a href="#!"><i class="material-icons">library_books</i>book</a></li>
+    <li><a href="{{ url_for('dashboard.index') }}"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li>
+      <ul class="collapsible" data-collapsible="accordion" style="padding-left:16px;">
+        <li><a class="collapsible-header waves-effect waves-cyan"><i class="material-icons">home</i>Buildings <i class="material-icons right" id="more">expand_more</i></a>
+          <div class="collapsible-body">
+            <ul>
+              {% for building in session.get('buildings', []) %}
+              <li><a style="padding-left:32px;" href="{{ url_for('dashboard.buildings.view', building_id=building['id']) }}"><i class="material-icons">home</i>{{ building['name'] }}</a></li>
+              {% endfor %}
+              <li><a style="padding-left:32px;" href="{{ url_for('dashboard.buildings.create') }}"><i class="material-icons">create</i>Create</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </li>
+    {# 
+      <li><a href="{{ url_for('dashboard.applications.index') }}"><i class="material-icons">extension</i>Applications</a></li>
     <li><a href="#!">Second Link</a></li>
     <li><div class="divider"></div></li>
     <li><a class="subheader">Tools</a></li>
-    <li><a class="waves-effect" href=""></a></li>
+    <li><a class="waves-effect" href="">xxx</a></li>
+    #}
+    <li><a href="{{ url_for('accounts.logout') }}"><i class="material-icons">exit_to_app</i>Logout</a></li>
 </ul>
                     
 {# end slide-out menu #}

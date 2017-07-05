@@ -2,13 +2,14 @@
 import unittest
 import mongoengine
 
-from hhservice.api import app
+from hhservice.api import create_app
+
 
 class HomeHeroAPITestCase(unittest.TestCase):
     """Parent class of all test cases"""
 
     def setUp(self):
-        self.app = app
+        self.app = create_app()
         self.app.config['MONGODB_DB'] = 'hhservice_test'
         self.app.testing = True
         self.ctx = self.app.app_context()
@@ -23,6 +24,6 @@ class HomeHeroAPITestCase(unittest.TestCase):
 
     def tearDown(self):
         self.ctx.pop()
-        
+
         if 'mongoengine' in self.app.extensions:
-            app.extensions['mongoengine'] = {}
+            self.app.extensions['mongoengine'] = {}

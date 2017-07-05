@@ -1,0 +1,24 @@
+{% extends '/base/default-dashboard.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    
+    <div class="row">
+      <div class="col s12">
+        <h3>Building: {{ building.name }}</h3>
+        <p><i>{{ building.description }}</i></p>
+        <p>
+          {% for tag in building.tags %}
+          <div class="chip">{{ tag }}</div>
+          {% endfor %} 
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+    </div>
+
+  </div>
+</div>
+{% endblock %}

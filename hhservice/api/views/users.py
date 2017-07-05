@@ -1,6 +1,6 @@
 
 from flask import Blueprint, request, abort, current_app
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, current_user
 
 from hhservice.api.renderers import render_json
 from hhservice.api import models
@@ -55,25 +55,5 @@ def create():
 @module.route('/<user_id>/', methods=['get'])
 @jwt_required
 def get(user_id):
-    current_user = get_jwt_identity()
-    print(current_user)
-
     schema = schemas.UserSchema()
-    try:
-        user = models.User.objects.with_id(user_id)
-    except Exception as e:
-
-        errors = [
-            {
-              'status': '404',
-              'title':  'User not found',
-              'detail': 'User not found'
-            }
-        ]
-
-        response_dict = dict(errors=errors)
-        response = render_json(response_dict)
-        response.status_code = 404
-        abort(response)
-
-    return render_json(schema.dump(user).data)
+    return render_json(schema.dump(current_user).data)

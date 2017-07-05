@@ -11,8 +11,6 @@ class RegisterTestCase(HomeHeroAPITestCase):
         super().setUp()
 
         self.app.secret_key = 'hello world'
-        api.initial(self.app)
-
         self.client = self.app.test_client()
 
         self.register_data = {

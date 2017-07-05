@@ -58,20 +58,41 @@ def main():
                       port=options.port,
                       alias='default')
     
-    from hhservice.api.models.users import User
-    user = User(
-            username='admin',
-            email='admin@hh.local',
-            first_name='admin',
-            last_name='admin',
-            status='active',
-            roles=['admin', 'user'])
+    from hhservice.api import models
+    user = models.User.objects(username='admin').first()
+    if not user:
+        print('create user admin')
+        user = models.User(
+                username='admin',
+                email='admin@hh.local',
+                first_name='admin',
+                last_name='admin',
+                status='active',
+                roles=['admin', 'user'])
 
-    user.set_password('password', salt=options.secret)
+        user.set_password('password', salt=options.secret)
+        user.save()
 
-    user.save()
+    apps = [
+            dict(name='Inventory',
+                 description='Inventory management in your house.',
+                 detail='Tracking and reminding food in your house.',
+                 publicurl='http://localhost:5051',
+                 status='active'),
+            dict(name='Nutrition',
+                 description='Nutrition tracking, meal plan and recipe.',
+                 detail='Nutrition tracking, meal plan and recipe.',
+                 publicurl='http://localhost:5052',
+                 status='active')
+            ]
+                 
+    for app_data in apps:
+        app = models.Application.objects(name=app_data['name']).first()
+        if not app:
+            app = models.Application(**app_data)
 
-    
+            print('create service name', app_data['name'])
+            app.save()
 
 if __name__ == '__main__':
     main()
