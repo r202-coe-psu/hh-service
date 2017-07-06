@@ -17,7 +17,7 @@ def init_request_context(app):
         name = None
         password = None
         access_token = None
-        expiry_date = datetime.datetime.utcnow()
+        expiry_date = None
 
         user = current_user
         # auth = session.get('auth', None)
@@ -26,16 +26,13 @@ def init_request_context(app):
             access_token = user.token.get('access-token', None)
             expiry_date = dateparse(user.token.get('expiry-date'))
 
-        print('cd', datetime.datetime.utcnow())
-        print('ed', expiry_date)
-
         schemas = app.config.get('HHCLIENT_SCHEMAS', None)
         host = app.config.get('HHCLIENT_HOST')
         port = app.config.get('HHCLIENT_PORT')
         secure = app.config.get('HHCLIENT_SECURE')
 
         now = datetime.datetime.utcnow()
-        if now > expiry_date:
+        if expiry_date and now > expiry_date:
             refresh_token()
             access_token = session['token']['access-token']
 
@@ -63,7 +60,7 @@ def refresh_token():
 
     if not refresh_token:
         raise Exception()
-    
+
     client = Client(host=host,
                     port=port,
                     secure_connection=secure,
@@ -73,4 +70,3 @@ def refresh_token():
     resource = client.refresh_token()
     user.token.update(resource.data)
     session['token'] = resource.data
-

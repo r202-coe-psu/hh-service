@@ -7,7 +7,7 @@ from . import common
 
 class ApplicationSchema(Schema):
 
-    id = fields.String(dump_only=True)
+    id = fields.String()
     name = fields.String(required=True,
                          validator=ma.validate.Length(min=3, max=20))
     description = fields.String()

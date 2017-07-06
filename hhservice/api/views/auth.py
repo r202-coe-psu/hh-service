@@ -18,7 +18,6 @@ from flask_jwt_extended.config import config as jwtconfig
 module = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@module.route('/', methods=['post'])
 @module.route('', methods=['post'])
 def auth():
     auth_dict = request.get_json()['auth']

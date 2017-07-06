@@ -27,7 +27,6 @@ def login():
                                form=form,
                                errors=auth.errors)
 
-    print('--->', auth.data)
     user = c.users.get(auth.data['user']['id'])
     buildings = c.buildings.list()
 

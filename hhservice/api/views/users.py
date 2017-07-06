@@ -11,7 +11,6 @@ import mongoengine as me
 module = Blueprint('users', __name__, url_prefix='/users')
 
 
-@module.route('/', methods=['post'])
 @module.route('', methods=['post'])
 def create():
     schema = schemas.UserSchema()
@@ -52,7 +51,6 @@ def create():
 
 
 @module.route('/<user_id>', methods=['get'])
-@module.route('/<user_id>/', methods=['get'])
 @jwt_required
 def get(user_id):
     schema = schemas.UserSchema()

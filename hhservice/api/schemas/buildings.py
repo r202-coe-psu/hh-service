@@ -7,6 +7,35 @@ from .applications import ApplicationSchema
 from .users import UserSchema
 
 
+class ActivatedApplicationSchema(ma.Schema):
+    id = fields.String(dump_only=True)
+    application = fields.Relationship(
+            related_url='/applications/{application_id}',
+            related_url_kwargs={'application_id': '<id>'},
+            many=True,
+            schema=ApplicationSchema,
+            include_resource_linkage=True,
+            type_='applications',
+            dump_only=True
+            )
+    owner = fields.Relationship(
+            related_url='/users/{user_id}',
+            related_url_kwargs={'user_id': '<id>'},
+            many=False,
+            schema=UserSchema,
+            include_resource_linkage=True,
+            type_='users',
+            dump_only=True
+            )
+
+    activate_date = fields.DateTime(dump_only=True)
+
+    class Meta:
+        type_ = 'activated-applications'
+        strict = True
+        inflect = common.dasherize
+
+
 class BuildingSchema(Schema):
 
     id = fields.String(dump_only=True)
@@ -35,15 +64,16 @@ class BuildingSchema(Schema):
             type_='members',
             dump_only=True
             )
-    applications = fields.Relationship(
+    activated_applications = fields.Relationship(
             related_url='/applications/{application_id}',
             related_url_kwargs={'application_id': '<id>'},
             many=True,
-            schema=ApplicationSchema,
+            schema=ActivatedApplicationSchema,
             include_resource_linkage=True,
-            type_='applications',
+            type_='activated-applications',
             dump_only=True
             )
+
 
     created_date = fields.DateTime(dump_only=True)
     updated_date = fields.DateTime(dump_only=True)

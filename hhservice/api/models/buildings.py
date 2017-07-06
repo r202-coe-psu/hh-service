@@ -5,6 +5,18 @@ from . import applications
 from . import users
 
 
+class ActivatedApplication(me.EmbeddedDocument):
+    id = me.ObjectIdField()
+    application = me.ReferenceField(applications.Application,
+                                    required=True,
+                                    dbref=True)
+    owner = me.ReferenceField(users.User,
+                              required=True,
+                              dbref=True)
+    activated_date = me.DateTimeField(required=True,
+                                    default=datetime.datetime.utcnow)
+
+
 class Building(me.Document):
 
     name = me.StringField(required=True)
@@ -15,10 +27,8 @@ class Building(me.Document):
     members = me.ListField(me.ReferenceField(users.User,
                                              required=True,
                                              dbref=True))
-    applications = me.ListField(me.ReferenceField(
-                                    applications.Application,
-                                    required=True,
-                                    dbref=True))
+    activated_applications = me.ListField(
+        me.EmbeddedDocumentField(ActivatedApplication)) 
 
     status = me.StringField(required=True, default='deactivate')
 

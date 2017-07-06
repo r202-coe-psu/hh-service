@@ -1,6 +1,5 @@
 
 import optparse
-import os
 
 from flask import Flask
 
@@ -21,7 +20,7 @@ def create_app():
     acl.init_jwt(app)
 
     # @app.before_request
-    # def before_request(): 
+    # def before_request():
     #     from flask import request
     #     print('rh:', request.headers)
     #     print('rd:', request.data)
@@ -30,8 +29,7 @@ def create_app():
 
 
 def get_program_options(default_host='127.0.0.1',
-        default_port='5001'):
-
+                        default_port='5001'):
     """
     Takes a flask.Flask instance and runs it. Parses 
     command-line flags to configure the app.
@@ -40,14 +38,13 @@ def get_program_options(default_host='127.0.0.1',
     # Set up the command-line options
     parser = optparse.OptionParser()
     parser.add_option("-H", "--host",
-                      help="Hostname of the Flask app " + \
+                      help="Hostname of the Flask app "
                            "[default %s]" % default_host,
                       default=default_host)
     parser.add_option("-P", "--port",
-                      help="Port for the Flask app " + \
+                      help="Port for the Flask app "
                            "[default %s]" % default_port,
                       default=default_port)
-
     # Two options useful for debugging purposes, but 
     # a bit dangerous so not exposed in the help message.
     parser.add_option("-d", "--debug",
@@ -63,11 +60,11 @@ def get_program_options(default_host='127.0.0.1',
     # to do a little extra setup
     if options.profile:
         from werkzeug.contrib.profiler import ProfilerMiddleware
+        from flask import current_app
 
-        app.config['PROFILE'] = True
-        app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
-                       restrictions=[30])
+        current_app.config['PROFILE'] = True
+        current_app.wsgi_app = ProfilerMiddleware(current_app.wsgi_app,
+                                                  restrictions=[30])
         options.debug = True
 
     return options
-

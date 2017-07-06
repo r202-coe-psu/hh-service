@@ -1,4 +1,4 @@
-from flask import Blueprint, request, g, render_template, redirect, url_for
+from flask import Blueprint, session, g, render_template, redirect, url_for
 from flask_login import login_required
 
 from hhservice.web import forms
@@ -25,11 +25,15 @@ def create():
                                form=form)
     c = g.hhclient
     building = c.buildings.create(**form.data)
-    
+
     if building.is_error:
         return render_template('dashboard/buildings/create.html',
                                form=form,
                                errors=building.errors)
+
+    buildings = session['buildings']
+    buildings.append(building.data)
+    session['buildings'] = buildings
 
     return redirect(url_for('dashboard.buildings.view',
                             building_id=building.id))
@@ -40,7 +44,19 @@ def create():
 def view(building_id):
     c = g.hhclient
     building = c.buildings.get(building_id)
+    applications = c.applications.list()
+
     return render_template('/dashboard/buildings/view.html',
-                           building=building)
+                           building=building,
+                           applications=applications)
 
 
+@module.route('/<building_id>/applications/<application_id>/<status>',
+              methods=['GET'])
+@login_required
+def control_applications(building_id, application_id, status):
+    c = g.hhclient
+    if status == 'active':
+        building = c.buildings.active_application(building_id, application_id)
+    return redirect(url_for('dashboard.buildings.view',
+                            building_id=building_id))

@@ -32,16 +32,20 @@ System.import('css-framework').then(() => {
 
 {% block main %}
   <div class="container">
-		<!-- <nav>-->
-		<!--   <div class="nav-wrapper">-->
-		<!--     <div class="col s12">-->
-		<!--       <a href="#!" class="breadcrumb">First</a>-->
-		<!--       <a href="#!" class="breadcrumb">Second</a>-->
-		<!--       <a href="#!" class="breadcrumb">Third</a>-->
-		<!--     </div>-->
-		<!--   </div>-->
-		<!-- </nav>-->
-            
+    <div class="row">
+      <nav>
+        <div class="nav-wrapper orange">
+          <div class="col s12">
+            <a href="{{ url_for('dashboard.index') }}" class="breadcrumb">Dashboard</a>
+            {% block breadcrumbs %}
+            {% endblock %}
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+ 
+  <div class="container">           
     {% block content %}{% endblock %}
   </div>
 {% endblock %}

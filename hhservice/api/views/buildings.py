@@ -25,7 +25,6 @@ def get_building_error_not_found():
 
 
 @module.route('', methods=['POST'])
-@module.route('/', methods=['POST'])
 @jwt_required
 def create():
     print('building data:', request.get_json())
@@ -49,7 +48,6 @@ def create():
 
 
 @module.route('', methods=['GET'])
-@module.route('/', methods=['GET'])
 @jwt_required
 def list():
     schema = schemas.BuildingSchema(many=True)
@@ -59,7 +57,6 @@ def list():
 
 
 @module.route('/<building_id>', methods=['GET'])
-@module.route('/<building_id>/', methods=['GET'])
 @jwt_required
 def get(building_id):
     schema = schemas.BuildingSchema()
@@ -69,4 +66,32 @@ def get(building_id):
     if not building:
         return abort(get_building_error_not_found())
 
+    return render_json(schema.dump(building).data)
+
+
+@module.route('/<building_id>/applications', methods=['PUT'])
+@jwt_required
+def active_application(building_id):
+    owner = current_user._get_current_object()
+    building = models.Building.objects(id=building_id,
+                                       owner=owner).first()
+    if not building:
+        return abort(get_building_error_not_found())
+
+    try:
+        schema = schemas.ApplicationSchema()
+        app_dict = schema.load(request.get_json(), partial=True).data
+        application = models.Application.objects.with_id(app_dict['id'])
+    except Exception as e:
+        from . import applications
+        return abort(applications.get_application_error_not_found())
+
+    activated_application = models.ActivatedApplication(
+            id=application.id,
+            owner=owner,
+            application=application)
+    building.activated_applications.append(activated_application)
+    building.save()
+
+    schema = schemas.BuildingSchema()
     return render_json(schema.dump(building).data)

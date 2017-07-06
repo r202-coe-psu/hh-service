@@ -88,7 +88,6 @@ class JSONAPISchema(mjs.JSONSchema):
         return schema
 
 
-@module.route('/')
 @module.route('')
 def all():
     json_schema = JSONAPISchema()
