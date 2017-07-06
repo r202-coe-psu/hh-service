@@ -10,7 +10,7 @@ module = Blueprint('dashboard.buildings', __name__, url_prefix='/buildings')
 @login_required
 def index():
     c = g.hhclient
-    buildings = c.building.list()
+    buildings = c.buildings.list()
     return render_template('/dashboard/buildings/index.html',
                            buildings=buildings)
 
@@ -56,7 +56,13 @@ def view(building_id):
 @login_required
 def control_applications(building_id, application_id, status):
     c = g.hhclient
-    if status == 'active':
-        building = c.buildings.active_application(building_id, application_id)
+    if status == 'activate':
+        c.buildings.activate_application(
+                building_id,
+                application_id)
+    elif status == 'deactivate':
+        c.buildings.deactivate_application(
+                building_id,
+                application_id)
     return redirect(url_for('dashboard.buildings.view',
                             building_id=building_id))

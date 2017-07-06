@@ -37,8 +37,7 @@ System.import('css-framework').then(() => {
         <div class="nav-wrapper orange">
           <div class="col s12">
             <a href="{{ url_for('dashboard.index') }}" class="breadcrumb">Dashboard</a>
-            {% block breadcrumbs %}
-            {% endblock %}
+            {% block breadcrumbs %}{% endblock %}
           </div>
         </div>
       </nav>

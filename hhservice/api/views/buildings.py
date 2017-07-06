@@ -71,7 +71,7 @@ def get(building_id):
 
 @module.route('/<building_id>/applications', methods=['PUT'])
 @jwt_required
-def active_application(building_id):
+def activate_application(building_id):
     owner = current_user._get_current_object()
     building = models.Building.objects(id=building_id,
                                        owner=owner).first()
@@ -95,3 +95,21 @@ def active_application(building_id):
 
     schema = schemas.BuildingSchema()
     return render_json(schema.dump(building).data)
+
+
+@module.route('/<building_id>/applications/<application_id>',
+              methods=['DELETE'])
+@jwt_required
+def deactivate_application(building_id, application_id):
+    owner = current_user._get_current_object()
+    building = models.Building.objects(id=building_id,
+                                       owner=owner).first()
+    if not building:
+        return abort(get_building_error_not_found())
+
+    building.activated_applications = [
+        aa for aa in building.activated_applications
+        if str(aa.id) != application_id]
+    building.save()
+
+    return render_json()
