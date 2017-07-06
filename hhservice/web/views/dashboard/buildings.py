@@ -51,6 +51,17 @@ def view(building_id):
                            applications=applications)
 
 
+@module.route('/<building_id>/delete', methods=['GET'])
+@login_required
+def delete(building_id):
+    c = g.hhclient
+    c.buildings.delete(building_id)
+
+    session['buildings'] = c.buildings.list()
+
+    return redirect(url_for('dashboard.buildings.index'))
+
+
 @module.route('/<building_id>/applications/<application_id>/<status>',
               methods=['GET'])
 @login_required

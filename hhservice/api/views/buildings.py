@@ -69,6 +69,20 @@ def get(building_id):
     return render_json(schema.dump(building).data)
 
 
+@module.route('/<building_id>', methods=['DELETE'])
+@jwt_required
+def delete(building_id):
+    owner = current_user._get_current_object()
+    building = models.Building.objects(id=building_id,
+                                       owner=owner).first()
+    if not building:
+        return abort(get_building_error_not_found())
+
+    building.delete()
+
+    return render_json()
+
+
 @module.route('/<building_id>/applications', methods=['PUT'])
 @jwt_required
 def activate_application(building_id):

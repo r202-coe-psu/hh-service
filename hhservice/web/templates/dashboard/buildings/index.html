@@ -31,6 +31,7 @@
             </div>
             <div class="grey lighten-4" style="padding:2px;">
               <a class="btn-floating waves-effect waves-light light-blue lighten-3" href="{{ url_for('dashboard.buildings.view', building_id=building.id) }}"><i class="material-icons">view_module</i></a>
+              <a class="btn-floating waves-effect waves-light red" href="{{ url_for('dashboard.buildings.delete', building_id=building.id) }}"><i class="material-icons">delete</i></a>
             </div>
 
             <!-- <div class="card-action">-->
