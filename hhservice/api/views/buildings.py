@@ -27,7 +27,6 @@ def get_building_error_not_found():
 @module.route('', methods=['POST'])
 @jwt_required
 def create():
-    print('building data:', request.get_json())
     schema = schemas.BuildingSchema()
     try:
         building_data = schema.load(request.get_json())

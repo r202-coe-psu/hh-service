@@ -5,7 +5,7 @@ from dateutil.parser import parse as dateparse
 from flask import g, current_app, session
 from flask_login import current_user
 
-from hhclient import Client
+from hhclient import get_client
 
 
 def init_request_context(app):
@@ -36,6 +36,7 @@ def init_request_context(app):
             refresh_token()
             access_token = session['token']['access-token']
 
+        Client = get_client('hhservice')
         g.hhclient = Client(name=name,
                             password=password,
                             host=host,
@@ -61,6 +62,7 @@ def refresh_token():
     if not refresh_token:
         raise Exception()
 
+    Client = get_client('hhservice')
     client = Client(host=host,
                     port=port,
                     secure_connection=secure,
