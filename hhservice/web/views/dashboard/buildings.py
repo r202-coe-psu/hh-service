@@ -57,7 +57,7 @@ def delete(building_id):
     c = g.hhclient
     c.buildings.delete(building_id)
 
-    session['buildings'] = c.buildings.list()
+    session['buildings'] = [building.data for building in c.buildings.list()]
 
     return redirect(url_for('dashboard.buildings.index'))
 

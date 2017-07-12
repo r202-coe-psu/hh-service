@@ -1,8 +1,8 @@
 {% extends '/base/default-dashboard.html' %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.buildings.index') }}" class="breadcrumb">Building</a>
-<a href="{{ url_for('dashboard.buildings.view', building_id=building.id) }}" class="breadcrumb">{{ building.name }}</a>
+<a href="{{ url_for('dashboard.inventories.index', building=inventory.building['id']) }}" class="breadcrumb">Inventories</a>
+<a href="{{ url_for('dashboard.inventories.view', inventory_id=inventory.id) }}" class="breadcrumb">{{ inventory.name }}</a>
 {% endblock %}
 
 {% block content %}
@@ -11,10 +11,10 @@
     
     <div class="row">
       <div class="col s12">
-        <h3>Building: {{ building.name }}</h3>
-        <p><i>{{ building.description }}</i></p>
+        <h3>Inventory: {{ inventory.name }}</h3>
+        <p><i>{{ inventory.description }}</i></p>
         <p>
-          {% for tag in building.tags %}
+          {% for tag in inventory.tags %}
           <div class="chip">{{ tag }}</div>
           {% endfor %} 
         </p>
@@ -22,7 +22,8 @@
     </div>
 
     {# begin active applications block #}
-    {% set act_apps = building.response['data']['relationships']['activated-applications']['data'] %}
+    {#
+    {% set act_apps = inventory.response['data']['relationships']['activated-applications']['data'] %}
     {% if act_apps|count > 0 %}
     <div class="row">
       <div class="col s12">
@@ -42,8 +43,8 @@
               <p>{{ app.detail }}</p>
             </div>
             <div class="grey lighten-4" style="padding:2px;">
-              <a class="btn-floating waves-effect waves-light light-blue lighten-3" href="{{ url_for('dashboard.inventories.index', building_id=building.id) }}"><i class="material-icons">view_module</i></a>
-              <a class="btn-floating waves-effect waves-light red" href="{{ url_for('dashboard.buildings.control_applications', building_id=building.id, application_id=app.id, status='deactivate') }}"><i class="material-icons">delete</i></a>
+              <a class="btn-floating waves-effect waves-light light-blue lighten-3" href="{{ url_for('dashboard.inventories.index', inventory_id=inventory.id) }}"><i class="material-icons">view_module</i></a>
+              <a class="btn-floating waves-effect waves-light red" href="{{ url_for('dashboard.inventories.control_applications', inventory_id=inventory.id, application_id=app.id, status='deactivate') }}"><i class="material-icons">delete</i></a>
             </div>
             <!-- <div class="card-action">-->
             <!--   <a href="#">This is a link</a>-->
@@ -55,9 +56,11 @@
       {% endfor %}
     </div>
     {% endif %}
+    #}
     {# end available applications block #}
 
     {# begin available applications block #}
+    {#
     <div class="row">
       <div class="col s12">
         <h4>Applications</h4>
@@ -74,7 +77,7 @@
               <p>{{ app.detail }}</p>
             </div>
             <div class="grey lighten-4" style="padding:2px;">
-              <a class="btn-floating waves-effect waves-light red" href="{{ url_for('dashboard.buildings.control_applications', building_id=building.id, application_id=app.id, status='activate') }}"><i class="material-icons">add</i></a>
+              <a class="btn-floating waves-effect waves-light red" href="{{ url_for('dashboard.inventories.control_applications', inventory_id=inventory.id, application_id=app.id, status='activate') }}"><i class="material-icons">add</i></a>
             </div>
 
             <!-- <div class="card-action">-->
@@ -85,6 +88,7 @@
       </div>
       {% endfor %}
     </div>
+    #}
     {# end available applications block #}
 
   </div>

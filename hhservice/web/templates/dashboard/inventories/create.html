@@ -10,6 +10,16 @@
 <div class="row">
   <div class="col s12">
     <h3>Inventory</h3>
+	  {% if errors is not undefined %}
+    <div class="card red lighten-5">
+      <div class="card-content red-text text-darken-4">
+        <span class="card-title">Errors</span>
+          {% for error in errors %}
+          <p>{{ error.detail }}</p>
+          {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 

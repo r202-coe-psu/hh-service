@@ -35,10 +35,17 @@ def list_applications():
 @module.route('/<application_id>', methods=['GET'])
 def get(application_id):
     schema = schemas.ApplicationSchema()
+    app = None
 
     try:
         app = models.Application.objects.with_id(application_id)
     except Exception as e:
-        raise e
+        pass
+
+    if not app:
+        app = models.Application.objects(name__iexact=application_id).first()
+
+    if not app:
+        return get_application_error_not_found()
 
     return render_json(schema.dump(app).data)

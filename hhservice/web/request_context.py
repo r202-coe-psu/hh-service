@@ -48,6 +48,55 @@ def init_request_context(app):
         if not schemas:
             app.config['HHCLIENT_SCHEMAS'] = g.hhclient.schemas
 
+    @app.before_request
+    def init_application_client():
+
+        def get_hhapps_client(name):
+            access_token = None
+            expiry_date = None
+
+            user = current_user
+            if user.is_authenticated:
+                access_token = user.token.get('access-token', None)
+                expiry_date = dateparse(user.token.get('expiry-date'))
+            else:
+                return None
+
+            schemas = app.config.get('HHCLIENT_APPS_SCHEMAS', {})
+            hhapps = app.config.get('HHCLIENT_APPS_ATTRIBUTES', {})
+
+            now = datetime.datetime.utcnow()
+            if expiry_date and now > expiry_date:
+                refresh_token()
+                access_token = session['token']['access-token']
+
+            if name not in hhapps:
+                application = get_application(name)
+                hhapps[name] = application.data
+                app.config['HHCLIENT_APPS_ATTRIBUTES'] = hhapps
+            print('apps', hhapps[name]['publicurl'])
+
+            Client = get_client(name)
+
+            client = Client(api_url=hhapps[name]['publicurl'],
+                            access_token=access_token,
+                            schemas=schemas.get(name, None))
+
+            if name not in schemas:
+                if 'HHCLIENT_APPS_SCHEMAS' not in app.config:
+                    app.config['HHCLIENT_APPS_SCHEMAS'] = {}
+                app.config['HHCLIENT_APPS_SCHEMAS'][name] = client.schemas
+
+            return client
+
+        g.get_hhapps_client = get_hhapps_client
+
+
+def get_application(name):
+    c = g.hhclient
+    application = c.applications.get(name)
+    return application
+
 
 def refresh_token():
     app = current_app
