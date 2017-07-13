@@ -1,0 +1,61 @@
+from flask import (Blueprint,
+                   render_template,
+                   g,
+                   redirect,
+                   url_for,
+                   session,
+                   request)
+from flask_login import login_required
+
+from hhservice.web import forms
+
+module = Blueprint('dashboard.stocks',
+                   __name__,
+                   url_prefix='/stocks'
+                   )
+
+app_name = 'stock'
+
+
+def get_building(building_id):
+    for b in session.get('buildings'):
+        if b['id'] == building_id:
+            return b
+
+@module.route('')
+@login_required
+def index():
+    return render_template('/dashboard/stocks/index.html')
+
+
+@module.route('/create', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = forms.stocks.InventoryForm()
+    if not form.validate_on_submit():
+        return render_template('dashboard/stocks/create.html',
+                               form=form)
+    c = g.get_hhapps_client(app_name)
+    building = get_building(request.args.get('building_id'))
+
+    stock = c.stocks.create(building=building,
+                                     **form.data)
+
+    if stock.is_error:
+        return render_template('dashboard/stocks/create.html',
+                               form=form,
+                               errors=stock.errors)
+
+    return redirect(url_for('dashboard.stocks.view',
+                            stock_id=stock.id))
+
+
+@module.route('/<stock_id>')
+@login_required
+def view(stock_id):
+
+    c = g.get_hhapps_client(app_name)
+    stock = c.stocks.get(stock_id)
+
+    return render_template('/dashboard/stocks/view.html',
+                           stock=stock)

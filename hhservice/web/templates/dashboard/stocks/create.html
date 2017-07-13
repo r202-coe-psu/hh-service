@@ -2,14 +2,14 @@
 {% import '/base/error-handler.html' as eh %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.inventories.index', building_id=request.args.get('building_id', None)) }}" class="breadcrumb">Inventory</a>
+<a href="{{ url_for('dashboard.stocks.index', building_id=request.args.get('building_id', None)) }}" class="breadcrumb">Inventory</a>
 {% endblock %}
 
 
 {% block content %}
 <div class="row">
   <div class="col s12">
-    <h3>Inventory</h3>
+    <h3>Stock</h3>
 	  {% if errors is not undefined %}
     <div class="card red lighten-5">
       <div class="card-content red-text text-darken-4">

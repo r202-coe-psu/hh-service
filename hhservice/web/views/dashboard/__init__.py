@@ -3,7 +3,7 @@ from flask_login import login_required
 
 from . import applications
 from . import buildings
-from . import inventories
+from . import stocks
 
 url_prefix = '/dashboard'
 module = Blueprint('dashboard', __name__, url_prefix=url_prefix)
@@ -14,7 +14,7 @@ def register_blueprint(app):
 
     for view in [applications,
                  buildings,
-                 inventories]:
+                 stocks]:
         app.register_blueprint(
             view.module,
             url_prefix=url_prefix + view.module.url_prefix)
