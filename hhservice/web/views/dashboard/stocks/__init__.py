@@ -9,12 +9,25 @@ from flask_login import login_required
 
 from hhservice.web import forms
 
+from . import inventories
+
+url_prefix = '/stocks'
 module = Blueprint('dashboard.stocks',
                    __name__,
-                   url_prefix='/stocks'
+                   url_prefix=url_prefix
                    )
 
 app_name = 'stock'
+
+
+def register_blueprint(app, parrent_url_prefix):
+    prefix = parrent_url_prefix + module.url_prefix
+    app.register_blueprint(module, url_prefix=prefix)
+
+    for view in [inventories]:
+        app.register_blueprint(
+            view.module,
+            url_prefix=prefix + view.module.url_prefix)
 
 
 def get_building(building_id):
@@ -22,16 +35,21 @@ def get_building(building_id):
         if b['id'] == building_id:
             return b
 
+
 @module.route('')
 @login_required
 def index():
-    return render_template('/dashboard/stocks/index.html')
+    c = g.get_hhapps_client(app_name)
+    stocks = c.stocks.list()
+
+    return render_template('/dashboard/stocks/index.html',
+                           stocks=stocks)
 
 
 @module.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    form = forms.stocks.InventoryForm()
+    form = forms.stocks.StockForm()
     if not form.validate_on_submit():
         return render_template('dashboard/stocks/create.html',
                                form=form)
@@ -39,7 +57,7 @@ def create():
     building = get_building(request.args.get('building_id'))
 
     stock = c.stocks.create(building=building,
-                                     **form.data)
+                            **form.data)
 
     if stock.is_error:
         return render_template('dashboard/stocks/create.html',
@@ -59,3 +77,9 @@ def view(stock_id):
 
     return render_template('/dashboard/stocks/view.html',
                            stock=stock)
+
+
+@module.route('/<stock_id>')
+@login_required
+def delete(stock_id):
+    return redirect()

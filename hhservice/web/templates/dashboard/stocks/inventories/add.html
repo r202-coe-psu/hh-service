@@ -1,0 +1,54 @@
+{% extends '/base/default-dashboard.html' %}
+{% import '/base/error-handler.html' as eh %}
+
+{% block breadcrumbs %}
+<a href="{{ url_for('dashboard.stocks.index', building_id=stock.building) }}" class="breadcrumb">Stock</a>
+<a href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" class="breadcrumb">{{ stock.name }}</a>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    <h3>Add item to inventory</h3>
+	  {% if errors is not undefined %}
+    <div class="card red lighten-5">
+      <div class="card-content red-text text-darken-4">
+        <span class="card-title">Errors</span>
+          {% for error in errors %}
+          <p>{{ error.detail }}</p>
+          {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12">
+    <form method="POST" action"{{ request.full_path }}">
+      {{ form.csrf_token }}
+{#
+      <div class="row">
+        <div class="input-field col s12">
+          {{ form.item(class_=eh.get_validate_class(form.item.errors)) }}
+          {{ form.item.label(data_error=eh.get_error_messages(form.item.errors)) }}
+        </div>
+      </div>
+#}
+      <div class="row">
+        <div class="input-field col s12">
+          {{ form.quantity(class_=eh.get_validate_class(form.quantity.errors)) }}
+          {{ form.quantity.label(data_error=eh.get_error_messages(form.quantity.errors)) }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <button type="submit" class="btn">Add</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+{% endblock %}

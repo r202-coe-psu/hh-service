@@ -13,11 +13,13 @@ def register_blueprint(app):
     app.register_blueprint(module)
 
     for view in [applications,
-                 buildings,
-                 stocks]:
+                 buildings]:
         app.register_blueprint(
             view.module,
             url_prefix=url_prefix + view.module.url_prefix)
+
+    for view in [stocks]:
+        view.register_blueprint(app, url_prefix)
 
 
 @module.route('/')

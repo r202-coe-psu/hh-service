@@ -4,10 +4,13 @@ from wtforms import validators
 
 from flask_wtf import FlaskForm
 
-from .fields import TagListField
+from ..fields import TagListField
+
+from . import items
+from . import inventories
 
 
-class InventoryForm(FlaskForm):
+class StockForm(FlaskForm):
     name = fields.TextField('Name', validators=[validators.InputRequired()])
     description = fields.TextField('Description')
     tags = TagListField('Tags')
