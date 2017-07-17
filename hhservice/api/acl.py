@@ -25,7 +25,7 @@ def init_jwt(app):
             errors = [
                         {
                             'status': '403',
-                            'title':  'The user might not have the necessary permissions for a resource',
+                            'title': 'The user might not have the necessary permissions for a resource',
                             'detail': 'The user might not have the necessary permissions for a resource'
                         }
                     ]
@@ -34,5 +34,6 @@ def init_jwt(app):
             response = render_json(response_dict)
             response.status_code = 403
             abort(response)
+
         # print('user jwt', user)
         return user

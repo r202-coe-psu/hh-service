@@ -12,7 +12,7 @@ from flask_jwt_extended import (create_access_token,
                                 current_user,
                                 jwt_refresh_token_required,
                                 )
-from flask_jwt_extended.tokens import decode_jwt
+from flask_jwt_extended.utils import decode_token
 from flask_jwt_extended.config import config as jwtconfig
 
 module = Blueprint('auth', __name__, url_prefix='/auth')
@@ -81,10 +81,7 @@ def refresh_token():
     access_token = create_access_token(user)
     refresh_token = create_refresh_token(user)
 
-    jwt_data = decode_jwt(access_token,
-                          jwtconfig.secret_key,
-                          jwtconfig.algorithm,
-                          jwtconfig.csrf_protect)
+    jwt_data = decode_token(access_token)
 
     token = dict(
         access_token=access_token,
