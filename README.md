@@ -74,6 +74,7 @@ $ source hh-env
 ### Web module
 
 * Create WEB configuration file `web-development.cfg`
+
 ~~~~
 # same as API secret key
 SECRET_KEY = '722661a83fab23164071e17a888de24c25db80b42fde'
@@ -96,6 +97,7 @@ $ source hh-env
 (hh-env)$ cd hh-service
 (hh-env)$ HHSERVICE_WEB_SETTINGS=$(pwd)/web-development.cfg hhservice-web -d
 ~~~~
+
 * Note
  * `HHSERVICE_WEB_SETTINGS` = a web setting file environent
  * `web-development.cfg` = a web setting file contains configurating variables.
