@@ -76,7 +76,7 @@ $ source hh-env
 * Create WEB configuration file `web-development.cfg`
 ~~~~
 # same as API secret key
-SECRET_KEY = '\xca\xe0p\xfdj\xf8\xcem?\x0f\x9d\x8e\xa6\xa0\xfd\x00/t7c\x9e\x98'
+SECRET_KEY = '722661a83fab23164071e17a888de24c25db80b42fde'
 
 # HHService API endpoint
 HHSERVICE_APT_HOST = 'localhost'
