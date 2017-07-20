@@ -85,6 +85,7 @@ HHSERVICE_API_PORT = 5001
 ~~~~
 
 * Initial JavaScript using jspm
+ * jspm can install by `npm install jspm`
 
 ~~~~
 $ jspm install
