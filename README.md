@@ -34,17 +34,27 @@ $ source hh-env
 ~~~~
 
 ### API module
+
 * Create API configuration file `api-development.cfg`
+
 ~~~~
 # Secret key
-# Can create using urandom
+# Can create using urandom or identify what ever charecter in [./0-9A-Za-z]
 # >>> import os
-# >>> os.urandom(22)
-# b'\xca\xe0p\xfdj\xf8\xcem?\x0f\x9d\x8e\xa6\xa0\xfd\x00/t7c\x9e\x98'
-SECRET_KEY = '\xca\xe0p\xfdj\xf8\xcem?\x0f\x9d\x8e\xa6\xa0\xfd\x00/t7c\x9e\x98'
+# >>> import binascii
+# >>> binascii.hexlify(os.urandom(22)).decode()
+# '722661a83fab23164071e17a888de24c25db80b42fde'
+SECRET_KEY = '722661a83fab23164071e17a888de24c25db80b42fde'
 
 # Database
 MONGODB_DB = 'homehero'
+
+~~~~
+
+* initial hhservice-api database
+
+~~~~
+$ scripts/init-database --db homehero --secret '722661a83fab23164071e17a888de24c25db80b42fde'
 ~~~~
 
 * Run api module
