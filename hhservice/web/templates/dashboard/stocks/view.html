@@ -1,7 +1,7 @@
 {% extends '/base/default-dashboard.html' %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.stocks.index', building=stock.building) }}" class="breadcrumb">Stocks</a>
+<a href="{{ url_for('dashboard.stocks.index', building_id=stock.building) }}" class="breadcrumb">Stocks</a>
 <a href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" class="breadcrumb">{{ stock.name }}</a>
 {% endblock %}
 
@@ -21,6 +21,7 @@
         <div>
           <a class="btn-floating btn-large waves-effect waves-light light-blue lighten-3" href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}"><i class="material-icons left">home</i></a>
           <a class="btn-floating btn-large waves-effect waves-light red" href="{{ url_for('dashboard.stocks.inventories.add', stock_id=stock.id) }}"><i class="material-icons">add</i></a>
+          <a class="btn-floating btn-large waves-effect waves-light green" href="{{ url_for('dashboard.stocks.inventories.add', stock_id=stock.id) }}"><i class="material-icons">list</i></a>
         </div>
 
       </div>
