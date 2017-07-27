@@ -10,6 +10,7 @@ from flask_login import login_required
 from hhservice.web import forms
 
 from . import inventories
+from . import items
 
 url_prefix = '/stocks'
 module = Blueprint('dashboard.stocks',
@@ -24,7 +25,8 @@ def register_blueprint(app, parrent_url_prefix):
     prefix = parrent_url_prefix + module.url_prefix
     app.register_blueprint(module, url_prefix=prefix)
 
-    for view in [inventories]:
+    for view in [inventories,
+                 items]:
         app.register_blueprint(
             view.module,
             url_prefix=prefix + view.module.url_prefix)

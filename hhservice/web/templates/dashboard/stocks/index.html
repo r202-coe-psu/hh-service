@@ -14,6 +14,7 @@
     <div>
       <a class="btn-floating btn-large waves-effect waves-light light-blue lighten-3" href="{{ url_for('dashboard.buildings.view', building_id=building['id']) }}"><i class="material-icons left">home</i></a>
       <a class="btn-floating btn-large waves-effect waves-light red" href="{{ url_for('dashboard.stocks.create', building_id=request.args.get('building_id', None)) }}"><i class="material-icons">add</i></a>
+      <a class="btn-floating btn-large waves-effect waves-light green" href="{{ url_for('dashboard.stocks.items.index', building_id=building['id']) }}"><i class="material-icons">list</i></a>
     </div>
   </div>
 </div>

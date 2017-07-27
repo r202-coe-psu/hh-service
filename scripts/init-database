@@ -75,7 +75,7 @@ def main():
 
     apps = [
             dict(name='Stock',
-                 description='Stock management in your house.',
+                 description='Food stock management in your house.',
                  detail='Tracking and reminding food in your house.',
                  publicurl='http://localhost:5051',
                  status='active'),

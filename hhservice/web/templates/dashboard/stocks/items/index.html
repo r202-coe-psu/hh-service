@@ -1,0 +1,50 @@
+{% extends '/base/default-dashboard.html' %}
+{% import '/base/error-handler.html' as eh %}
+
+{% block breadcrumbs %}
+<a href="{{ url_for('dashboard.stocks.index',) }}" class="breadcrumb">Stock</a>
+<a href="{{ url_for('dashboard.stocks.items.index') }}" class="breadcrumb">Items</a>
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col s12">
+    <h3>Items</h3>
+	  {% if errors is not undefined %}
+    <div class="card red lighten-5">
+      <div class="card-content red-text text-darken-4">
+        <span class="card-title">Errors</span>
+          {% for error in errors %}
+          <p>{{ error.detail }}</p>
+          {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {#
+    <div>
+      <a class="btn-floating btn-large waves-effect waves-light red" href="{{ url_for('dashboard.stocks.items.add', stock_id=stock.id) }}"><i class="material-icons">add</i></a>
+    </div>
+    #}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12"> 
+    <form method="POST" action="{{ url_for('dashboard.stocks.items.get_upc', **request.args) }}">
+      {{ form.csrf_token }}
+      <div class="row">
+        <div class="input-field col s10">
+          {{ form.upc(class_=eh.get_validate_class(form.upc.errors)) }}
+          {{ form.upc.label(data_error=eh.get_error_messages(form.upc.errors)) }}
+        </div>
+        <div class="input-field col s2">
+          <button type="submit" class="btn">View</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -11,3 +11,7 @@ class ItemForm(FlaskForm):
     name = fields.TextField('Name', validators=[validators.InputRequired()])
     description = fields.TextField('Description')
     tags = TagListField('Tags')
+
+
+class ItemUPCForm(FlaskForm):
+    upc = fields.TextField('UPC', validators=[validators.InputRequired()])
