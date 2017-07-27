@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, g
 from flask_login import login_required
 
 from . import applications
@@ -25,4 +25,10 @@ def register_blueprint(app):
 @module.route('/')
 @login_required
 def index():
-    return render_template('dashboard/index.html')
+    hhclient = g.hhclient
+    hh_stock_client = g.get_hhapps_client('stock')
+    buildings = hhclient.buildings.list()
+    stocks = hh_stock_client.stocks.list()
+    return render_template('dashboard/index.html',
+                           buildings=buildings,
+                           stocks=stocks)

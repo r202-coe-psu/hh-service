@@ -2,7 +2,7 @@
 {% import '/base/error-handler.html' as eh %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.stocks.index',) }}" class="breadcrumb">Stock</a>
+<a href="{{ url_for('dashboard.stocks.index', **request.args) }}" class="breadcrumb">Stock</a>
 <a href="{{ url_for('dashboard.stocks.items.index') }}" class="breadcrumb">Items</a>
 {% endblock %}
 
@@ -53,7 +53,7 @@
     <div class="row">
       <div class="col s4">
         {% if item.image | count > 0 %}
-        <img src="{{item.image}}" />
+        <img src="{{item.image}}" width="100%"/>
         {% endif %}
       </div>
       <div class="col s8">
