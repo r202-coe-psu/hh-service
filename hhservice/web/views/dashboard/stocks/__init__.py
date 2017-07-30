@@ -76,9 +76,13 @@ def view(stock_id):
 
     c = g.get_hhapps_client(app_name)
     stock = c.stocks.get(stock_id)
+    inventories = c.inventories.list(stock)
+    for inventory in inventories:
+        inventory.item = c.items.get(inventory.item)
 
     return render_template('/dashboard/stocks/view.html',
-                           stock=stock)
+                           stock=stock,
+                           inventories=inventories)
 
 
 @module.route('/<stock_id>')
