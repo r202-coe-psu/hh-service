@@ -2,7 +2,7 @@
 {% import '/base/error-handler.html' as eh %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.stocks.index',) }}" class="breadcrumb">Stock</a>
+<a href="{{ url_for('dashboard.stocks.index', **request.args) }}" class="breadcrumb">Stock</a>
 <a href="{{ url_for('dashboard.stocks.items.index') }}" class="breadcrumb">Items</a>
 {% endblock %}
 
@@ -21,11 +21,6 @@
       </div>
     </div>
     {% endif %}
-    {#
-    <div>
-      <a class="btn-floating btn-large waves-effect waves-light red" href="{{ url_for('dashboard.stocks.items.add', stock_id=stock.id) }}"><i class="material-icons">add</i></a>
-    </div>
-    #}
   </div>
 </div>
 
@@ -47,4 +42,34 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col s12">
+   <table>
+        <thead>
+          <tr>
+              <th>Name</th>
+              <th>UPC</th>
+              <th>Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td><a href="{{ url_for('dashboard.stocks.items.view', item_id=item.id, **request.args) }}">{{ item.name }}</a></td>
+            {% if item.upc %}
+            <td><a href="{{ url_for('dashboard.stocks.items.view_upc', upc=item.upc, **request.args) }}">{{ item.upc }}</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% if item.image %}
+            <td><img height="50px" src="{{ item.image }}"></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
 {% endblock %}

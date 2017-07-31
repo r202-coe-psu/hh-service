@@ -36,6 +36,18 @@ def get_upc():
                             **request.args))
 
 
+@module.route('/<item_id>')
+def view(item_id):
+    c = g.get_hhapps_client('stock')
+    item = c.items.get(item_id)
+
+    form = forms.stocks.items.ItemUPCForm()
+
+    return render_template('/dashboard/stocks/items/view_upc.html',
+                           item=item,
+                           form=form)
+
+
 @module.route('/upc/<upc>')
 def view_upc(upc):
     c = g.get_hhapps_client('stock')
