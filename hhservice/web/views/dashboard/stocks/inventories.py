@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, g, redirect, url_for
 from hhservice.web import forms
 
-import datetime
-
 module = Blueprint('dashboard.stocks.inventories',
                    __name__,
                    url_prefix='/<stock_id>/inventories')
@@ -27,10 +25,8 @@ def add(stock_id):
     #             form.expired_date.format)
 
     is_item = True if form.item.data else False or len(form.item_upc.data) > 0
-    print('fdata', form.data)
     if not form.validate_on_submit():
-        print('ferror', form.errors)
-        errors = [{'detail': '{}: {}'.format(k, v) } for k, v 
+        errors = [{'detail': '{}: {}'.format(k, v)} for k, v
                   in form.errors.items()]
         return render_template('/dashboard/stocks/inventories/add.html',
                                form=form,

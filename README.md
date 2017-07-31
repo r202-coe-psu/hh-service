@@ -23,10 +23,13 @@ $ source hh-env
 
 * Install `hhclient` for web module
  * Clone repository
+
 ~~~~
 git clone git@138.47.200.245:HomeHero-Projects/python-hhclient.git
 ~~~~
+
  * install `hhclient` in testing environment
+
 ~~~~
 $ source hh-env
 (hh-env)$ cd python-hhclient
