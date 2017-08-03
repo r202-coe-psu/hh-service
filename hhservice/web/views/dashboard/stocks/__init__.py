@@ -9,8 +9,8 @@ from flask_login import login_required
 
 from hhservice.web import forms
 
-from . import inventories
-from . import items
+from . import inventories as inventories_view
+from . import items as items_view
 
 url_prefix = '/stocks'
 module = Blueprint('dashboard.stocks',
@@ -25,8 +25,8 @@ def register_blueprint(app, parrent_url_prefix):
     prefix = parrent_url_prefix + module.url_prefix
     app.register_blueprint(module, url_prefix=prefix)
 
-    for view in [inventories,
-                 items]:
+    for view in [inventories_view,
+                 items_view]:
         app.register_blueprint(
             view.module,
             url_prefix=prefix + view.module.url_prefix)
@@ -77,11 +77,11 @@ def view(stock_id):
     c = g.get_hhapps_client(app_name)
     stock = c.stocks.get(stock_id)
     inventories = c.inventories.list(stock)
-    for inventory in inventories:
-        inventory.item = c.items.get(inventory.item)
+    available_items = inventories_view.get_available_items(inventories)
 
     return render_template('/dashboard/stocks/view.html',
                            stock=stock,
+                           available_items=available_items,
                            inventories=inventories)
 
 

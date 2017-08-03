@@ -7,6 +7,8 @@ from wtforms import validators
 from flask_wtf import FlaskForm
 
 import datetime
+
+
 class InventoryForm(FlaskForm):
     item = fields.SelectField()
     item_upc = fields.StringField()
@@ -18,6 +20,15 @@ class InventoryForm(FlaskForm):
     # expired_time = fields.TextField(widget=html5widgets.TimeInput())
 
     quantity = fields.IntegerField(
+            default=1,
+            widget=html5widgets.NumberInput(min=1),
+            validators=[validators.NumberRange(min=1)])
+
+
+class InventoryConsumingForm(FlaskForm):
+    item = fields.SelectField()
+
+    consuming_size = fields.IntegerField(
             default=1,
             widget=html5widgets.NumberInput(min=1),
             validators=[validators.NumberRange(min=1)])

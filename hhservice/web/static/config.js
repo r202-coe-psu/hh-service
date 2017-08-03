@@ -14,7 +14,7 @@ System.config({
   },
 
   map: {
-    "      css": "github:systemjs/plugin-css@0.1.35",
+    "css": "github:systemjs/plugin-css@0.1.35",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "clean-css": "npm:clean-css@3.4.26",

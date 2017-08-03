@@ -4,6 +4,7 @@ from flask import (Blueprint,
                    redirect,
                    url_for,
                    request)
+from flask_login import login_required
 
 from hhservice.web import forms
 
@@ -13,6 +14,7 @@ module = Blueprint('dashboard.stocks.items',
 
 
 @module.route('')
+@login_required
 def index():
     c = g.get_hhapps_client('stock')
     items = c.items.list()
@@ -25,6 +27,7 @@ def index():
 
 
 @module.route('/upc', methods=['POST'])
+@login_required
 def get_upc():
     form = forms.stocks.items.ItemUPCForm()
     if not form.validate_on_submit():
@@ -37,6 +40,7 @@ def get_upc():
 
 
 @module.route('/<item_id>')
+@login_required
 def view(item_id):
     c = g.get_hhapps_client('stock')
     item = c.items.get(item_id)
@@ -49,6 +53,7 @@ def view(item_id):
 
 
 @module.route('/upc/<upc>')
+@login_required
 def view_upc(upc):
     c = g.get_hhapps_client('stock')
     item = c.items.get_upc(upc)
@@ -61,6 +66,7 @@ def view_upc(upc):
 
 
 @module.route('/add')
+@login_required
 def add():
     c = g.get_hhapps_client('stock')
     items = c.items.list()

@@ -3,6 +3,7 @@
 {% block breadcrumbs %}
 <a href="{{ url_for('dashboard.stocks.index', building_id=stock.building) }}" class="breadcrumb">Stocks</a>
 <a href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" class="breadcrumb">{{ stock.name }}</a>
+<a href="{{ url_for('dashboard.stocks.inventories.index', stock_id=stock.id) }}" class="breadcrumb">Inventories</a>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +22,6 @@
         <div>
           <a class="btn-floating btn-large waves-effect waves-light tooltipped light-blue lighten-3" href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Stock {{stock.name}}"><i class="material-icons left">home</i></a>
           <a class="btn-floating btn-large waves-effect waves-light tooltipped red" href="{{ url_for('dashboard.stocks.inventories.add', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Add inventories"><i class="material-icons">add</i></a>
-          <a class="btn-floating btn-large waves-effect waves-light tooltipped green" href="{{ url_for('dashboard.stocks.inventories.index', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Inventory List"><i class="material-icons">list</i></a>
           <a class="btn-floating btn-large waves-effect waves-light tooltipped orange" href="{{ url_for('dashboard.stocks.inventories.consume', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Consume Food"><i class="material-icons">local_dining</i></a>
         </div>
       </div>
@@ -31,24 +31,28 @@
 </div>
 
 <div class="row">
-  {% for key, aitem in available_items.items() %}
-    <div class="col s4">
-      <div class="card">
-        <div class="card-image">
-          <img src="{{ aitem['item'].image }}">
-        </div>
-        <div class="card-content">
-          <span class="card-title">{{ aitem['item'].name }}</span>
-          <p>{{ aitem['item'].description }}</p>
-          <p><strong>Available:</strong> {{ aitem['consuming_size'] }}</p>
-        </div>
-        {#
-        <div class="card-action">
-          <a href="#">This is a link</a>
-        </div>
-        #}
-      </div>
-    </div>
-  {% endfor %}
+  <div class="col s12">
+    <table>
+      <thead>
+        <tr>
+            <th>Created Date</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Consuming Size</th>
+            <th>Expired Date</th>
+        </tr>
+      </thead>
+      <tbody>
+    {% for inventory in inventories %}
+      <tr>
+        <td>{{ inventory.created_date.ctime() }}</td>
+        <td>{{ inventory.item.name }}</td>
+        <td>{{ inventory.quantity }}</td>
+        <td>{{ inventory.consuming_size }}</td>
+        <td>{{ inventory.expired_date.ctime() }}</td>
+    {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endblock content %}
