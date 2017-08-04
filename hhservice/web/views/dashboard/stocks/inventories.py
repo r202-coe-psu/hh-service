@@ -15,13 +15,13 @@ def get_available_items(inventories):
     for inventory in inventories:
         available_item = available_items.get(inventory.item, None)
         if available_item:
-            available_items[inventory.item]['consuming_size'] += \
-                    inventory.consuming_size
+            available_items[inventory.item]['available_serving_size'] += \
+                    inventory.available_serving_size
         else:
             item = c.items.get(inventory.item)
             available_items[item.id] = dict(
                     item=item,
-                    consuming_size=inventory.consuming_size)
+                    available_serving_size=inventory.available_serving_size)
 
     return available_items
 
@@ -103,10 +103,10 @@ def consume(stock_id):
     form = forms.stocks.inventories.InventoryConsumingForm()
     item_choices = [
             (aitem['item'].id,
-             '{} ({}) consuming size: {}'.format(
+             '{} ({}) available serving size: {}'.format(
                     aitem['item'].name,
                     aitem['item'].upc,
-                    aitem['consuming_size']))
+                    aitem['available_serving_size']))
             for k, aitem in available_items.items()]
 
     item_choices.insert(0, ('', 'Select item'))
