@@ -38,8 +38,8 @@
         <tr>
             <th>Consumed Date</th>
             <th>Item Name</th>
-            <th>Quantity</th>
             <th>Consuming Size</th>
+            <th>Consuming Unit</th>
             <th>Comsumer</th>
         </tr>
       </thead>
@@ -47,9 +47,9 @@
     {% for consumption in consumptions %}
       <tr>
         <td>{{ consumption.consuming_date.ctime() }}</td>
-        <td>{{ consumption.item.name }}</td>
-        <td>{{ consumption.consuming_date }}</td>
+        <td>{{ consumption.item.name }}<br/>UPC: {{ consumption.item.upc }}</td>
         <td>{{ consumption.consuming_size }}</td>
+        <td>{{ consumption.consuming_unit }}</td>
         <td>{{ consumption.consumer.first_name }}</td>
     {% endfor %}
       </tbody>
