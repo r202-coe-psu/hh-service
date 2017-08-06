@@ -3,7 +3,7 @@
 {% block breadcrumbs %}
 <a href="{{ url_for('dashboard.stocks.index', building_id=stock.building) }}" class="breadcrumb">Stocks</a>
 <a href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" class="breadcrumb">{{ stock.name }}</a>
-<a href="{{ url_for('dashboard.stocks.inventories.index', stock_id=stock.id) }}" class="breadcrumb">Inventories</a>
+<a href="{{ url_for('dashboard.stocks.consumptions.index', stock_id=stock.id) }}" class="breadcrumb">Consumption History</a>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +22,7 @@
         <div>
           <a class="btn-floating btn-large waves-effect waves-light tooltipped light-blue lighten-3" href="{{ url_for('dashboard.stocks.view', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Stock {{stock.name}}"><i class="material-icons left">home</i></a>
           <a class="btn-floating btn-large waves-effect waves-light tooltipped red" href="{{ url_for('dashboard.stocks.inventories.add', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Add inventories"><i class="material-icons">add</i></a>
-          <a class="btn-floating btn-large waves-effect waves-light tooltipped green" href="{{ url_for('dashboard.stocks.consumptions.index', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Comsuming history"><i class="material-icons">list</i></a> 
+          <a class="btn-floating btn-large waves-effect waves-light tooltipped green" href="{{ url_for('dashboard.stocks.inventories.index', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Inventory list"><i class="material-icons">list</i></a> 
           <a class="btn-floating btn-large waves-effect waves-light tooltipped orange" href="{{ url_for('dashboard.stocks.inventories.consume', stock_id=stock.id) }}" data-position="bottom" data-delay="50" data-tooltip="Consume Food"><i class="material-icons">local_dining</i></a>
         </div>
       </div>
@@ -36,21 +36,21 @@
     <table>
       <thead>
         <tr>
-            <th>Created Date</th>
+            <th>Consumed Date</th>
             <th>Item Name</th>
             <th>Quantity</th>
             <th>Consuming Size</th>
-            <th>Expired Date</th>
+            <th>Comsumer</th>
         </tr>
       </thead>
       <tbody>
-    {% for inventory in inventories %}
+    {% for consumption in consumptions %}
       <tr>
-        <td>{{ inventory.created_date.ctime() }}</td>
-        <td>{{ inventory.item.name }}</td>
-        <td>{{ inventory.quantity }}</td>
-        <td>{{ inventory.available_serving_size }}</td>
-        <td>{{ inventory.expired_date.ctime() }}</td>
+        <td>{{ consumption.consuming_date.ctime() }}</td>
+        <td>{{ consumption.item.name }}</td>
+        <td>{{ consumption.consuming_date }}</td>
+        <td>{{ consumption.consuming_size }}</td>
+        <td>{{ consumption.consumer.first_name }}</td>
     {% endfor %}
       </tbody>
     </table>

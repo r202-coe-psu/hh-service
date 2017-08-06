@@ -11,6 +11,7 @@ from hhservice.web import forms
 
 from . import inventories as inventories_view
 from . import items as items_view
+from . import consumptions as consumption_view
 
 url_prefix = '/stocks'
 module = Blueprint('dashboard.stocks',
@@ -26,7 +27,8 @@ def register_blueprint(app, parrent_url_prefix):
     app.register_blueprint(module, url_prefix=prefix)
 
     for view in [inventories_view,
-                 items_view]:
+                 items_view,
+                 consumption_view]:
         app.register_blueprint(
             view.module,
             url_prefix=prefix + view.module.url_prefix)

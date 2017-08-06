@@ -124,5 +124,5 @@ def consume(stock_id):
     c.inventories.consume(stock=stock,
                           item=form.item.data,
                           consuming_size=form.consuming_size.data)
-    return redirect(url_for('dashboard.stocks.inventory.index',
+    return redirect(url_for('dashboard.stocks.inventories.index',
                             stock_id=stock.id))
