@@ -2,7 +2,7 @@
 {% import '/base/error-handler.html' as eh %}
 
 {% block breadcrumbs %}
-<a href="{{ url_for('dashboard.stocks.index', building_id=request.args.get('building_id', None)) }}" class="breadcrumb">Inventory</a>
+<a href="{{ url_for('dashboard.stocks.index', building_id=request.args.get('building_id', None)) }}" class="breadcrumb">Stock</a>
 {% endblock %}
 
 
